@@ -148,6 +148,16 @@ async function handleLogoutUser() {
                 />
               </div>
             </div>
+            <!-- <div class="avatar">
+              <div class="w-10 mask mask-squircle bg-[#09435b]">
+                <div class="flex items-center justify-center w-full h-full">
+                  <img
+                    src="https://icons.veryicon.com/png/o/business/multi-color-financial-and-business-icons/user-139.png"
+                    alt="User Profile"
+                  />
+                </div>
+              </div>
+            </div> -->
             <Icon name="line-md:chevron-small-down" size="1.2em" />
           </summary>
           <ul
@@ -162,7 +172,7 @@ async function handleLogoutUser() {
               </a>
             </li> -->
             <li>
-              <nuxt-link to="/dashboard"
+              <nuxt-link to="/dashboard/info"
                 ><Icon
                   name="material-symbols:dashboard-outline"
                 />Dashboard</nuxt-link
