@@ -31,7 +31,9 @@ definePageMeta({
         </div>
         <div class="flex flex-col items-center gap-1">
           <h1 class="text-center font-bold text-slate-600">Hi, Garry Ongko</h1>
-          <span class="badge badge-sm badge-neutral">Admin</span>
+          <span class="badge badge-sm badge-neutral">{{
+            currentUser?.role ?? "No Role"
+          }}</span>
         </div>
         <!-- Links -->
         <ul class="menu menu-xl mt-5 gap-2">
@@ -89,7 +91,9 @@ definePageMeta({
         <h2 class="text-xl mb-4">
           Selamat Datang, Garry Ongko
 
-          <span class="badge badge-lg badge-neutral ml-3">Admin</span>
+          <span class="badge badge-lg badge-neutral ml-3">{{
+            currentUser?.role ?? "No Roles"
+          }}</span>
         </h2>
         <NuxtPage />
       </div>

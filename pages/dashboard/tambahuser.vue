@@ -1,4 +1,6 @@
 <script setup>
+const currentUser = useState("currentUser");
+
 const dataUser = reactive({
   nis: "",
   email: "",
@@ -13,33 +15,30 @@ const errorMsg = reactive({
   role: "",
 });
 
-function handleCreateUser() {
-  if (dataUser.role === "Pilih salah satu") {
-    errorMsg.role = "Setidak nya pilih salah satu role";
-    return;
+async function handleCreateUser() {
+  try {
+    if (dataUser.role === "Pilih salah satu") {
+      errorMsg.role = "Setidak nya pilih salah satu role";
+      return;
+    }
+
+    const { data, error } = await useFetch("/admin/createAccount", {
+      body: {
+        permissionToCreateIsFrom: currentUser.value.uid,
+        ...dataUser,
+      },
+      method: "POST",
+    });
+    if (data.value) {
+      console.log({ data });
+    }
+
+    if (error.value) {
+      throw createError(error.value);
+    }
+  } catch (error) {
+    console.error(error);
   }
-
-  // if (!dataUser.email) {
-  //   errorMsg.email = "Email tidak boleh kosong";
-  //   return;
-  // }
-  // if (!dataUser.password) {
-  //   errorMsg.email = "Password tidak boleh kosong";
-  //   return;
-  // }
-
-  // if (!dataUser.email) {
-  //   errorMsg.email = "Email tidak boleh kosong";
-  //   return;
-  // }
-
-  // for (const msg in errorMsg) {
-  //   if (msg !== "") {
-  //     return;
-  //   }
-  // }
-
-  console.log("user created", dataUser);
 }
 </script>
 
@@ -104,14 +103,14 @@ function handleCreateUser() {
         <li>
           Email disarankan agar diisi oleh user agar bisa dipulihkan lewat
           email, namun jika tidak maka hanya admin yang bisa mereset password
-          user tersebut (dibalik layar email tetap akan dibuat dengan format
-          nis_user@namawebsite.com)
+          user tersebut
         </li>
       </ul>
       <ul>
         <li>
           Role yang dipilih pada saat pembuatan user baru pada menu "Tambahkan
-          sebagai" akan berpengaruh kepada flexibilitas user tersebut
+          sebagai" akan berpengaruh kepada hak akses user tersebut terhadap
+          website
         </li>
       </ul>
     </div>

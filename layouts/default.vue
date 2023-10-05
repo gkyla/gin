@@ -6,10 +6,15 @@ const currentUser = useState("currentUser", () => null);
 const isLoading = useState("isLoading", () => true);
 
 onMounted(() => {
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     isLoading.value = true;
     if (user) {
+      const tokenResult = await user.getIdTokenResult();
+      console.log("ROLE", tokenResult.claims.role);
       currentUser.value = user;
+      currentUser.value.role = tokenResult.claims.role;
+      console.log(currentUser.value);
+      console.log({ tokenResult });
     } else {
       currentUser.value = null;
     }
