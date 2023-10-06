@@ -1,5 +1,6 @@
 <script setup>
 const currentUser = useState("currentUser");
+const { auth } = await useFirebase();
 
 const dataUser = reactive({
   nis: "",
@@ -21,14 +22,15 @@ async function handleCreateUser() {
       errorMsg.role = "Setidak nya pilih salah satu role";
       return;
     }
-
+    const currentUserIdToken = await auth.currentUser.getIdToken(true);
     const { data, error } = await useFetch("/admin/createAccount", {
       body: {
-        permissionToCreateIsFrom: currentUser.value.uid,
+        idToken: currentUserIdToken,
         ...dataUser,
       },
       method: "POST",
     });
+
     if (data.value) {
       console.log({ data });
     }

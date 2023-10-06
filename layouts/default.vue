@@ -10,9 +10,9 @@ onMounted(() => {
     isLoading.value = true;
     if (user) {
       const tokenResult = await user.getIdTokenResult();
-      console.log("ROLE", tokenResult.claims.role);
+      console.log("ROLE", tokenResult.claims?.role);
       currentUser.value = user;
-      currentUser.value.role = tokenResult.claims.role;
+      currentUser.value.role = tokenResult.claims?.role;
       console.log(currentUser.value);
       console.log({ tokenResult });
     } else {

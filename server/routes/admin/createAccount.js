@@ -10,13 +10,13 @@ const auth = getAuth(app);
 export default defineEventHandler(async (event) => {
   /* TODO: Tambahin data tambahan ke firestore/metadata */
 
-  const { nis, role, email, password, name, permissionToCreateIsFrom } =
-    await readBody(event);
+  const { nis, role, email, password, name, idToken } = await readBody(event);
 
   // if(per)
-  const userIsAdmin = await auth.getUser(permissionToCreateIsFrom);
+  const decodedToken = await auth.verifyIdToken(idToken);
+  const userIsAdmin = await auth.getUser(decodedToken.uid);
+  console.log({ decodedToken, userIsAdmin, idToken });
   if (userIsAdmin.customClaims?.role !== "Admin") {
-    console.log({ userIsAdmin });
     throw createError({
       statusMessage:
         "Maaf kamu tidak memiliki akses/wewenang untuk mengubah atau membuat user",
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       displayName: name,
     });
     console.log({ createdUser, userIsAdmin });
-    auth.setCustomUserClaims(createdUser.uid, {
+    await auth.setCustomUserClaims(createdUser.uid, {
       role,
     });
 
