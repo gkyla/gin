@@ -78,10 +78,10 @@ definePageMeta({
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/dashboard/manageuser" class="font-bold">
+            <NuxtLink to="/dashboard/aturwewenang" class="font-bold">
               <Icon name="line-md:account-alert" />
 
-              Manage Siswa
+              Atur Wewenang
             </NuxtLink>
           </li>
         </ul>
