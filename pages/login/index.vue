@@ -1,8 +1,8 @@
 <script setup>
 const { login } = await useAuth();
-const { buildUserNisRef, buildUserMetadataRef, getData } = await useFirestore();
+const { buildUserNisRef, getData } = await useFirestore();
 
-const currentUser = useState("currentUser");
+// const currentUser = useState("currentUser");
 const userMetadata = useState("userMetadata", () => null);
 
 const userLoginInfo = reactive({
@@ -18,15 +18,11 @@ async function handleLoginUser() {
     };
 
     const nisRef = buildUserNisRef(userLoginInfo.nis);
-    // const metadataRef = buildUserMetadataRef(userLoginInfo.nis);
     const nisData = await getData(nisRef);
     console.log("struct email", nisData);
-
     const userCredential = await login(nisData.email, userLoginInfo.password);
     console.log(userCredential);
     if (userCredential) {
-      userMetadata.value = await getData(metadataRef);
-      console.log(userMetadata.value);
       await navigateTo("/dashboard");
     }
   } catch (error) {

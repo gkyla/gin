@@ -1,9 +1,11 @@
 <script setup>
 import { onAuthStateChanged } from "firebase/auth";
 const { auth } = await useFirebase();
+const { buildUserMetadataRef, getData } = await useFirestore();
 
 const currentUser = useState("currentUser", () => null);
 const isLoading = useState("isLoading", () => true);
+const userMetadata = useState("userMetadata");
 
 onMounted(() => {
   onAuthStateChanged(auth, async (user) => {
@@ -15,6 +17,17 @@ onMounted(() => {
       currentUser.value.role = tokenResult.claims?.role;
       console.log(currentUser.value);
       console.log({ tokenResult });
+
+      /* TODO: cari nis dengan menggunakan field email */
+      if (userMetadata.value?.nisFromLogin) {
+        const metadataRef = buildUserMetadataRef(
+          userMetadata.value?.nisFromLogin,
+        );
+        userMetadata.value = {
+          ...userMetadata.value,
+          ...(await getData(metadataRef)),
+        };
+      }
     } else {
       currentUser.value = null;
     }

@@ -92,7 +92,7 @@ async function handleLogoutUser() {
           :class="{
             'mx-2': currentUser,
           }"
-          >{{ currentUser ? userMetadata.name : "" }}
+          >{{ currentUser ? userMetadata?.name : "" }}
         </span>
         <!-- <span
           :class="{
