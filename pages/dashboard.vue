@@ -1,5 +1,6 @@
 <script setup>
 const currentUser = useState("currentUser");
+const userMetadata = useState("userMetadata");
 
 definePageMeta({
   middleware: [
@@ -30,7 +31,9 @@ definePageMeta({
           </div>
         </div>
         <div class="flex flex-col items-center gap-1">
-          <h1 class="text-center font-bold text-slate-600">Hi, Garry Ongko</h1>
+          <h1 class="text-center font-bold text-slate-600">
+            Hi, {{ currentUser ? userMetadata?.name : "Anon" }}
+          </h1>
           <span class="badge badge-sm badge-neutral">{{
             currentUser?.role ?? "No Role"
           }}</span>
@@ -89,7 +92,7 @@ definePageMeta({
       </div>
       <div class="flex-1">
         <h2 class="text-xl mb-4">
-          Selamat Datang, Garry Ongko
+          Selamat Datang, {{ currentUser ? userMetadata?.name : "Anon" }}
 
           <span class="badge badge-lg badge-neutral ml-3">{{
             currentUser?.role ?? "No Roles"

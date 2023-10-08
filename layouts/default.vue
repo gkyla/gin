@@ -24,14 +24,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen h-full w-full">
+  <div class="min-h-screen h-full w-full relative">
     <h1 v-if="isLoading" class="text-2xl font-bold mt-24 text-black">
       Loading ...
     </h1>
-    <div v-if="!isLoading">
+    <div v-if="!isLoading" class="">
       <TheNavbar />
-      <div class="mt-20">
-        testtt
+      <div class="mt-20 absolute top-0 left-0 right-0 bottom-0">
+        w
         <slot />
       </div>
     </div>

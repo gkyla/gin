@@ -5,6 +5,7 @@ const colorMode = useColorMode();
 
 // const isLoggedIn = computed(() => currentUser.value !== null);
 const currentUser = useState("currentUser");
+const userMetadata = useState("userMetadata");
 
 function handleTheme(theme) {
   switch (theme) {
@@ -26,41 +27,7 @@ async function handleLogoutUser() {
 </script>
 
 <template>
-  <!-- <header
-    class="w-full flex justify-center items-center fixed top-0 left-0 right-0 bg-white shadow"
-  >
-    <div class="max-w-screen-xl w-full class p-4 flex gap-4">
-      <div class="flex items-center">
-        <span>Alumni</span>
-      </div>
-      <nav class="ml-auto">
-        <div class="flex gap-2 items-center">
-          <button class="btn" @click="colorMode.preference = 'light'">
-            <Icon name="line-md:lightbulb" /> Change to dark
-          </button>
-          <div v-if="currentUser" class="flex gap-2 items-center">
-            <span class="font-semibold">NIS: 1809599001</span>
-            <span>|</span>
-            <span class="font-semibold">Garry Ongko</span>
-            <nuxt-link to="/">home</nuxt-link>
-            <nuxt-link to="/login">login</nuxt-link>
-            <nuxt-link to="/dashboard">Dashboard</nuxt-link>
-            <button
-              @click="handleLogoutUser"
-              class="bg-red-400 px-3 py-1.5 rounded-xl text-white"
-            >
-              Logout
-            </button>
-          </div>
-          <button v-else @click="navigateTo('/login')">Login</button>
-        </div>
-      </nav>
-    </div>
-  </header> -->
-  <!-- <header
-    class="w-full flex justify-center items-center fixed top-0 left-0 right-0 bg-white shadow"
-  > -->
-  <div class="drawer">
+  <div class="drawer z-10">
     <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
     <div
       class="drawer-content w-full flex justify-center items-center fixed top-0 left-0 right-0 shadow"
@@ -125,7 +92,7 @@ async function handleLogoutUser() {
           :class="{
             'mx-2': currentUser,
           }"
-          >{{ currentUser ? "Garry Ongko" : "" }}
+          >{{ currentUser ? userMetadata.name : "" }}
         </span>
         <!-- <span
           :class="{

@@ -1,21 +1,32 @@
 <script setup>
 const { login } = await useAuth();
+const { buildUserNisRef, buildUserMetadataRef, getData } = await useFirestore();
 
 const currentUser = useState("currentUser");
+const userMetadata = useState("userMetadata", () => null);
 
 const userLoginInfo = reactive({
+  nis: "",
   email: "",
   password: "",
 });
 
 async function handleLoginUser() {
   try {
-    const userCredential = await login(
-      userLoginInfo.email,
-      userLoginInfo.password,
-    );
+    userMetadata.value = {
+      nisFromLogin: userLoginInfo.nis,
+    };
+
+    const nisRef = buildUserNisRef(userLoginInfo.nis);
+    // const metadataRef = buildUserMetadataRef(userLoginInfo.nis);
+    const nisData = await getData(nisRef);
+    console.log("struct email", nisData);
+
+    const userCredential = await login(nisData.email, userLoginInfo.password);
     console.log(userCredential);
     if (userCredential) {
+      userMetadata.value = await getData(metadataRef);
+      console.log(userMetadata.value);
       await navigateTo("/dashboard");
     }
   } catch (error) {
@@ -29,9 +40,7 @@ definePageMeta({
 </script>
 
 <template>
-  <code>{{ currentUser }}</code>
-
-  <div class="w-full min-h-screen flex flex-col items-center justify-center">
+  <div class="w-full h-full flex items-center justify-center -mt-20">
     <div id="panel" class="max-w-[320px] w-full">
       <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-center mb-2">Selamat Datang</h1>
@@ -42,30 +51,33 @@ definePageMeta({
       </div>
 
       <form @submit.prevent="handleLoginUser" class="flex flex-col gap-3">
-        <div class="flex flex-col">
-          <!-- Pake email dulu -->
-          <label for="nis" class="font-bold mb-1">NIS</label>
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="nis">
+            <span class="label-text font-bold">NIS</span>
+          </label>
           <input
-            v-model="userLoginInfo.email"
+            v-model="userLoginInfo.nis"
             type="text"
             id="nis"
-            class="border rounded-md px-2 py-1"
-            placeholder="Masukan NIS"
+            placeholder="Type here"
+            class="input input-bordered w-full max-w-xs"
           />
         </div>
-        <div class="flex flex-col">
-          <label for="password" class="font-bold mb-1">Password</label>
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="password">
+            <span class="label-text font-bold">Password</span>
+          </label>
           <input
             v-model="userLoginInfo.password"
             type="password"
             id="password"
-            class="border rounded-md px-2 py-1"
-            placeholder="Masukan Password"
+            placeholder="Type here"
+            class="input input-bordered w-full max-w-xs"
           />
         </div>
         <button
           type="submit"
-          class="bg-red-400 rounded-md p-2 font-bold text-white mt-3"
+          class="btn hover:bg-red-300 bg-red-400 rounded-md p-2 font-bold text-white mt-3"
         >
           Login
         </button>

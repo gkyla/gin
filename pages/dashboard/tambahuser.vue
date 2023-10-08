@@ -7,6 +7,7 @@ const dataUser = reactive({
   email: "",
   password: "",
   role: "Pilih salah satu",
+  name: "",
 });
 
 const errorMsg = reactive({
@@ -68,6 +69,18 @@ async function handleCreateUser() {
           v-model="dataUser.email"
           type="text"
           id="email-user"
+          placeholder="Masukan Disini"
+          class="input input-bordered w-full max-w-xs"
+        />
+      </div>
+      <div class="form-control w-full max-w-xs mt-2">
+        <label class="label" for="name-user">
+          <span class="label-text">Nama</span>
+        </label>
+        <input
+          v-model="dataUser.name"
+          type="text"
+          id="name-user"
           placeholder="Masukan Disini"
           class="input input-bordered w-full max-w-xs"
         />
