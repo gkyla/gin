@@ -33,7 +33,7 @@ async function handleCreateUser() {
     });
 
     if (data.value) {
-      console.log({ data });
+      console.log({ data: data.value });
     }
 
     if (error.value) {

@@ -1,14 +1,34 @@
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 
 export default async function () {
   const { db } = await useFirebase();
 
-  function buildUserNisRef(nis) {
-    return doc(db, "users-nis", nis);
+  // function buildUserNisRef(nis) {
+  //   return doc(db, "users-nis", nis);
+  // }
+
+  function buildUserMetadataRef(uid) {
+    return doc(db, "users-metadata", uid);
   }
 
-  function buildUserMetadataRef(nis) {
-    return doc(db, "users-metadata", nis);
+  async function getUserEmailByNIS(nis) {
+    const nisRef = collection(db, "users-nis");
+
+    const q = query(nisRef, where("nis", "==", nis));
+    const data = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      data.push(doc.data());
+    });
+
+    return data;
   }
 
   async function getData(doc) {
@@ -19,5 +39,5 @@ export default async function () {
     }
   }
 
-  return { buildUserNisRef, buildUserMetadataRef, getData };
+  return { buildUserMetadataRef, getData, getUserEmailByNIS };
 }

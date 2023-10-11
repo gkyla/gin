@@ -8,11 +8,8 @@ const app = initializeApp({
 
 const auth = getAuth(app);
 const db = getFirestore(app);
-// const usersNikRef = collection(db, "users-nik");
 
 export default defineEventHandler(async (event) => {
-  /* TODO: Tambahin data tambahan ke firestore/metadata */
-
   const { nis, role, email, password, name, idToken } = await readBody(event);
 
   const decodedToken = await auth.verifyIdToken(idToken);
@@ -38,16 +35,17 @@ export default defineEventHandler(async (event) => {
     const userNisCollection = db.collection("users-nis");
     const userMetadataCollection = db.collection("users-metadata");
 
-    await userNisCollection.doc(nis).set({
+    await userNisCollection.doc(createdUser.uid).set({
       email,
+      nis,
     });
-    await userMetadataCollection.doc(nis).set({
+    await userMetadataCollection.doc(createdUser.uid).set({
       name,
     });
 
     return {
       createdUser,
-      message: `User dengan ${nis} (${name}) telah berhasil dibuat`,
+      message: `User ${nis} (${name}) telah berhasil dibuat`,
     };
   }
 });

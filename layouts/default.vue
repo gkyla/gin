@@ -16,20 +16,12 @@ onMounted(() => {
       currentUser.value = user;
       currentUser.value.role = tokenResult.claims?.role;
       console.log(currentUser.value);
-      console.log({ tokenResult });
 
-      /* TODO: cari nis dengan menggunakan field email */
-      if (userMetadata.value?.nisFromLogin) {
-        const metadataRef = buildUserMetadataRef(
-          userMetadata.value?.nisFromLogin,
-        );
-        userMetadata.value = {
-          ...userMetadata.value,
-          ...(await getData(metadataRef)),
-        };
-      }
+      const metadataRef = buildUserMetadataRef(user.uid);
+      userMetadata.value = await getData(metadataRef);
     } else {
       currentUser.value = null;
+      userMetadata.value = null;
     }
     isLoading.value = false;
   });
