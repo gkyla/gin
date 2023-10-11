@@ -155,11 +155,16 @@ async function handleLogoutUser() {
           <ul
             v-else
             tabindex="0"
-            class="mt-3 z-[1] p-2 shadow-lg menu menu-md dropdown-content bg-base-100 rounded-box w-52"
+            class="mt-3 z-[1] p-2 shadow-lg menu menu-md dropdown-content bg-base-100 rounded-box w-52 gap-1"
           >
             <li>
               <nuxt-link to="/login"
                 ><Icon name="tabler:login-2" />Login</nuxt-link
+              >
+            </li>
+            <li>
+              <nuxt-link to="/registrasi"
+                ><Icon name="icon-park-solid:add-user" />Registrasi</nuxt-link
               >
             </li>
           </ul>
@@ -220,6 +225,11 @@ async function handleLogoutUser() {
         </li>
         <li>
           <nuxt-link to="/login"><Icon name="tabler:login-2" />login</nuxt-link>
+        </li>
+        <li>
+          <nuxt-link to="/registrasi"
+            ><Icon name="icon-park-solid:add-user" />Registrasi</nuxt-link
+          >
         </li>
         <li>
           <nuxt-link to="/dashboard"
