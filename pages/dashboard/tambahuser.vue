@@ -24,7 +24,7 @@ async function handleCreateUser() {
       return;
     }
     const currentUserIdToken = await auth.currentUser.getIdToken(true);
-    const { data, error } = await useFetch("/admin/createAccount", {
+    const { data, error } = await useFetch("/admin/create-account", {
       body: {
         idToken: currentUserIdToken,
         ...dataUser,
