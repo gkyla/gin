@@ -10,9 +10,10 @@ const userLoginInfo = reactive({
 
 async function handleLoginUser() {
   try {
-    const [userData] = await getUserEmailByNIS(userLoginInfo.nis);
-    console.log("struct email", userData);
-    const userCredential = await login(userData.email, userLoginInfo.password);
+    const userCredential = await login(
+      userLoginInfo.nis,
+      userLoginInfo.password,
+    );
     console.log(userCredential);
     if (userCredential) {
       await navigateTo("/dashboard");

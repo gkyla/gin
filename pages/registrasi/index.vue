@@ -12,8 +12,22 @@ const userRegistrationInfo = reactive({
 
 async function handleRegistrationUser() {
   try {
-    console.log("hello");
+    const { data, error } = await useFetch("/api/auth/basic/create-account", {
+      method: "POST",
+      body: {
+        ...userRegistrationInfo,
+      },
+    });
+    // const userCredential = await login(
+    //   userRegistrationInfo.nis,
+    //   userRegistrationInfo.password,
+    // );
+    // if (userCredential) {
+    //   console.log(userCredential);
+    //   navigateTo("/dashboard");
+    // }
   } catch (error) {
+    // throw createError(error);
     console.error(error);
   }
 }

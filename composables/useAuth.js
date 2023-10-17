@@ -6,6 +6,7 @@ import {
 
 export default async function () {
   const { auth } = await useFirebase();
+  const { getUserEmailByNIS } = await useFirestore();
 
   function getCurrentUser() {
     return new Promise((resolve, reject) => {
@@ -16,7 +17,7 @@ export default async function () {
     });
   }
 
-  async function login(email, password) {
+  async function login(nis, password) {
     /* TODO: dirubah untuk login menggunakan nis 
     
           Flow: ambil email di firestore dengan nis yang sudah ditentukan
@@ -24,9 +25,11 @@ export default async function () {
         */
 
     try {
+      const userData = await getUserEmailByNIS(nis);
+      console.log(userData);
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        email,
+        userData[0].email,
         password,
       );
       return userCredential;
