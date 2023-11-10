@@ -11,25 +11,21 @@ const userRegistrationInfo = reactive({
 });
 
 async function handleRegistrationUser() {
-  try {
-    const { data, error } = await useFetch("/api/auth/basic/create-account", {
-      method: "POST",
-      body: {
-        ...userRegistrationInfo,
-      },
-    });
-    // const userCredential = await login(
-    //   userRegistrationInfo.nis,
-    //   userRegistrationInfo.password,
-    // );
-    // if (userCredential) {
-    //   console.log(userCredential);
-    //   navigateTo("/dashboard");
-    // }
-  } catch (error) {
-    // throw createError(error);
-    console.error(error);
-  }
+  const { data, error } = await useFetch("/api/auth/basic/create-account", {
+    method: "POST",
+    body: {
+      ...userRegistrationInfo,
+    },
+  }).catch((fetchErr) => console.error(fetchErr));
+  // const userCredential = await login(
+  //   userRegistrationInfo.nis,
+  //   userRegistrationInfo.password,s
+  // );
+  // if (userCredential) {
+  //   console.log(userCredential);
+  //   navigateTo("/dashboard");
+  // }
+  console.log(error.value?.data);
 }
 
 /* TODO: fungi registrasi, alihkan user ke dashboard jika user sudah login */
