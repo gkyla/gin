@@ -14,23 +14,15 @@ export default defineEventHandler(async (event) => {
     apakah email sudah terdaftar ?
   */
 
-  const queryNis = await db
-    .collection("users-nis")
-    .where("nis", "==", nis)
-    .get();
-
-  let isNisExists = null;
-  queryNis.forEach((doc) => {
-    if (doc.exists) {
-      isNisExists = doc.data();
-      console.log("doc exists", doc.data());
-    }
-  });
-
-  if (isNisExists) {
+  if (await isNisExists(nis)) {
     throw createError({
       statusMessage:
         "NIS sudah terdaftar, silakan login jika sudah terdaftar, atau masukan NIS yang lain",
+      data: {
+        message:
+          "NIS sudah terdaftar, silakan login jika sudah terdaftar, atau masukan NIS yang lain",
+        isError: true,
+      },
     });
   }
 
