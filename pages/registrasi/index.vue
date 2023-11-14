@@ -10,22 +10,38 @@ const userRegistrationInfo = reactive({
   password: "",
 });
 
+const errorSign = ref({});
+const isLoading = ref(false);
+
 async function handleRegistrationUser() {
+  isLoading.value = true;
   const { data, error } = await useFetch("/api/auth/basic/create-account", {
     method: "POST",
     body: {
       ...userRegistrationInfo,
     },
   }).catch((fetchErr) => console.error(fetchErr));
-  // const userCredential = await login(
-  //   userRegistrationInfo.nis,
-  //   userRegistrationInfo.password,s
-  // );
-  // if (userCredential) {
-  //   console.log(userCredential);
-  //   navigateTo("/dashboard");
-  // }
-  console.log(error.value?.data);
+  isLoading.value = false;
+
+  if (error.value) {
+    console.log(error.value?.data);
+    errorSign.value = error.value?.data?.data;
+  } else {
+    errorSign.value = null;
+    isLoading.value = true;
+    const userCredential = await login(
+      userRegistrationInfo.nis,
+      userRegistrationInfo.password,
+    );
+
+    isLoading.value = false;
+    if (userCredential) {
+      console.log(userCredential);
+      navigateTo("/dashboard");
+    } else {
+      console.log("no user credential");
+    }
+  }
 }
 
 /* TODO: fungi registrasi, alihkan user ke dashboard jika user sudah login */
@@ -44,6 +60,12 @@ definePageMeta({
         </p>
       </div>
 
+      <div
+        v-if="errorSign.isError"
+        class="bg-red-300 text-slate-600 rounded-xl shadow my-2 p-3"
+      >
+        {{ errorSign.message || "" }}
+      </div>
       <form
         @submit.prevent="handleRegistrationUser"
         class="flex flex-col gap-2"
@@ -111,12 +133,22 @@ definePageMeta({
           />
         </div>
         <button
+          v-if="!isLoading"
           type="submit"
           class="btn hover:bg-red-300 bg-red-400 rounded-md p-2 font-bold text-white mt-3"
         >
           Registrasi
         </button>
+        <button
+          v-if="isLoading"
+          type="submit"
+          disabled
+          class="btn hover:bg-red-300 bg-red-400 rounded-md p-2 font-bold text-white mt-3 flex justify-center items-center"
+        >
+          <div class="loading loading-spinner loading-md text-red-400"></div>
+        </button>
       </form>
+
       <button class="text-sm flex justify-center w-full mt-2">
         <span>Kamu lupa password ? Reset password</span>
       </button>

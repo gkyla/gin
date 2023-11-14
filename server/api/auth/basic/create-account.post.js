@@ -16,11 +16,9 @@ export default defineEventHandler(async (event) => {
 
   if (await isNisExists(nis)) {
     throw createError({
-      statusMessage:
-        "NIS sudah terdaftar, silakan login jika sudah terdaftar, atau masukan NIS yang lain",
+      statusMessage: `NIS "${nis}" sudah terdaftar di sistem, silakan masukan NIS yang lain`,
       data: {
-        message:
-          "NIS sudah terdaftar, silakan login jika sudah terdaftar, atau masukan NIS yang lain",
+        message: `NIS "${nis}" sudah terdaftar di sistem, silakan masukan NIS yang lain`,
         isError: true,
       },
     });

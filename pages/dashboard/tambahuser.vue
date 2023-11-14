@@ -10,37 +10,36 @@ const dataUser = reactive({
   name: "",
 });
 
-const errorMsg = reactive({
-  nis: "",
-  email: "",
-  password: "",
-  role: "",
-});
+const errorSign = ref(null);
+const successSign = ref(null);
+const isLoading = ref(false);
 
 async function handleCreateUser() {
-  try {
-    if (dataUser.role === "Pilih salah satu") {
-      errorMsg.role = "Setidak nya pilih salah satu role";
-      return;
-    }
-    const currentUserIdToken = await auth.currentUser.getIdToken(true);
-    const { data, error } = await useFetch("/api/auth/admin/create-account", {
-      body: {
-        idToken: currentUserIdToken,
-        ...dataUser,
-      },
-      method: "POST",
-    });
+  if (dataUser.role === "Pilih salah satu") {
+    errorSign.value = "Setidak nya pilih salah satu role";
+    return;
+  }
 
-    if (data.value) {
-      console.log({ data: data.value });
-    }
+  isLoading.value = true;
+  const currentUserIdToken = await auth.currentUser
+    .getIdToken(true)
+    .catch((tokenErr) => console.error(tokenErr));
+  const { data, error } = await useFetch("/api/auth/admin/create-account", {
+    body: {
+      idToken: currentUserIdToken,
+      ...dataUser,
+    },
+    method: "POST",
+  }).catch((errorFetch) => console.error(errorFetch));
 
-    if (error.value) {
-      throw createError(error.value);
-    }
-  } catch (error) {
-    console.error(error);
+  isLoading.value = false;
+  if (error.value) {
+    console.error(error.value);
+    successSign.value = null;
+    errorSign.value = error.value?.data?.data;
+  } else {
+    errorSign.value = null;
+    successSign.value = data.value;
   }
 }
 </script>
@@ -49,6 +48,19 @@ async function handleCreateUser() {
   <!-- Wrapped by flex-1 (dashboard) -->
   <div class="flex">
     <form @submit.prevent="handleCreateUser" class="w-3/4">
+      <div
+        v-if="errorSign"
+        class="bg-red-300 text-slate-600 rounded-xl shadow my-2 p-3"
+      >
+        {{ errorSign.message || "" }}
+      </div>
+      <div
+        v-if="!errorSign && successSign"
+        class="bg-green-300 text-slate-600 rounded-xl shadow my-2 p-3"
+      >
+        {{ successSign.message || "" }}
+      </div>
+
       <div class="form-control w-full max-w-xs">
         <label class="label" for="nis-user">
           <span class="label-text">Nomor Induk Sekolah (NIS)</span>
