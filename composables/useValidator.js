@@ -9,11 +9,11 @@ export default function () {
 
     const isNisValid = nisSchema.validate(value);
     if (!isNisValid.error) {
-      return isNisValid;
+      return { ...isNisValid, type: "nis" };
     } else {
       const isEmailValid = emailSchema.validate(value);
       if (!isEmailValid.error) {
-        return isEmailValid;
+        return { ...isEmailValid, type: "email" };
       }
     }
 

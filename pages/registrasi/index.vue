@@ -1,6 +1,5 @@
 <script setup>
 const { login } = await useAuth();
-const { getUserEmailByNIS } = await useFirestore();
 
 const userRegistrationInfo = reactive({
   name: "",

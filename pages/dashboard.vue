@@ -66,12 +66,15 @@ definePageMeta({
             </h1>
           </div> -->
         </ul>
-        <ul class="menu menu-xl gap-2">
+        <ul v-if="currentUser?.role === 'Admin'" class="menu menu-xl gap-2">
           <li></li>
           <li class="menu-title flex flex-row items-center text-base gap-4">
             <Icon name="fa:group" size="1.5em" class="text-[#09435b]" />
 
             <span class="">Atur Siswa</span>
+            <span class="badge badge-md badge-neutral ml-3">{{
+              currentUser?.role === "Admin" ? "Admin" : ""
+            }}</span>
           </li>
           <li>
             <NuxtLink to="/dashboard/tambahuser" class="font-bold">

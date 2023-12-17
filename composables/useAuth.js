@@ -2,11 +2,12 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  getAuth,
 } from "firebase/auth";
 
 export default async function () {
   const { auth } = await useFirebase();
-  const { getUserEmailByNIS } = await useFirestore();
+  const { getUserData } = await useFirestore();
 
   function getCurrentUser() {
     return new Promise((resolve, reject) => {
@@ -17,15 +18,13 @@ export default async function () {
     });
   }
 
-  async function login(nis, password) {
-    /* TODO: dirubah untuk login menggunakan nis 
-    
-          Flow: ambil email di firestore dengan nis yang sudah ditentukan
-        
-        */
+  function getUserWithId(id) {
+    // const userRecords =
+  }
 
+  async function login(nis, password) {
     try {
-      const userData = await getUserEmailByNIS(nis);
+      const userData = await getUserData({ nis });
       console.log(userData);
       const userCredential = await signInWithEmailAndPassword(
         auth,

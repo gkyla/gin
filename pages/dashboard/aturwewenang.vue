@@ -1,21 +1,120 @@
-<script setup></script>
+<script setup>
+// const { getUserData } = await useFirestore();
+const { validateNisOrEmail } = useValidator();
+
+const loading = ref(true);
+const errorSign = ref("");
+const searchBar = ref("");
+const user = ref(null);
+const isUser = computed(() => user.value != null);
+const disableChangeUserData = reactive({
+  nis: true,
+  name: true,
+  email: true,
+  role: true,
+});
+
+const beforeUpdateUserState = ref(null);
+
+async function findUser() {
+  const validate = validateNisOrEmail(searchBar.value);
+  if (validate.error) {
+    errorSign.value = validate.error;
+    return;
+  } else {
+    errorSign.value = "";
+  }
+  console.log(validate);
+
+  // const userData = await getUserData({
+  //   nis: searchBar.value,
+  //   email: searchBar.value,
+  // });
+
+  const { data: userData, error } = await useFetch("/api/auth/admin/users", {
+    method: "POST",
+    body: {
+      userInput: validate.value,
+    },
+  });
+
+  if (!error.value) {
+    console.log("value user :", userData.value);
+
+    if (userData.value) {
+      user.value = { ...userData.value };
+      beforeUpdateUserState.value = { ...userData.value };
+    }
+  } else {
+    user.value = null;
+    errorSign.value = error.value.statusMessage;
+  }
+}
+
+async function updateUserInfo() {
+  console.log(user.value);
+  const { data, error } = await useFetch("/api/auth/admin/users/update", {
+    method: "POST",
+    body: {
+      userInput: {
+        id: user.value.data.id,
+        nis: user.value.data.nis,
+        email: user.value.data.email,
+        name: user.value.metadata.name,
+      },
+    },
+  });
+
+  if (error.value) {
+    errorSign.value = error.value.statusMessage;
+  } else {
+    alert(data.value.message);
+  }
+}
+
+function toggleChange(field) {
+  /* field = property */
+  disableChangeUserData[field] = !disableChangeUserData[field];
+}
+</script>
 
 <template>
   <div class="">
     <div class="flex flex-col">
-      <div class="grid grid-cols-2">
-        <form @submit.prevent="handleCreateUser">
-          <div class="form-control w-full max-w-xs">
+      <div class="grid w-full justify-center">
+        <div class="prose prose-md text-center mt-4">
+          <h1 class="text-2xl">Atur Wewenang</h1>
+          <p>Cari user menggunakan NIS atau menggunakan email yang terdaftar</p>
+        </div>
+        <div role="alert" v-if="errorSign" class="alert alert-error mt-5">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>{{ errorSign }}</span>
+        </div>
+        <form @submit.prevent="findUser" class="flex items-center my-2">
+          <div class="form-control w-full max-w-lg">
             <label class="label" for="nis-user">
               <span class="label-text"
                 >Nomor Induk Sekolah (NIS) Atau Email</span
               >
             </label>
             <input
+              v-model="searchBar"
               type="text"
               placeholder="Masukan Disini"
               id="nis-user"
-              class="input input-bordered w-full max-w-xs"
+              class="input input-bordered w-full max-w-lg"
             />
           </div>
           <div class="flex gap-5 my-2 items-center">
@@ -34,29 +133,24 @@
             <option value="DU/DI">- DU/DI</option>
           </select>
          </div> -->
-          <button type="submit" class="btn btn-neutral">Cari user</button>
+          <button type="submit" class="btn btn-neutral self-end ml-2">
+            Cari user
+          </button>
         </form>
-        <div class="prose prose-md">
-          <h1 class="text-2xl">Cara :</h1>
-          <p>Cari user menggunakan NIS atau menggunakan email yang terdaftar</p>
-        </div>
       </div>
       <div class="divider"></div>
 
       <div class="relative">
-        <div
-          class="toast toast-top toast-start absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-center"
-        >
-          <div
-            class="flex items-center justify-center text-center alert alert-warning shadow-md"
-          >
+        <div v-if="!isUser" class="min-h-[300px] grid place-content-center">
+          <div class="grid place-items-center">
             <span class="font-bold">User yang dicari akan muncul disini</span>
+            <!-- <span class="loading loading-spinner loading-lg"></span> -->
           </div>
         </div>
-
-        <div class="blur-sm pointer-events-none">
+        <div v-if="isUser">
           <!-- blur-sm pointer-events-none -->
           <h1 class="text-lg">Informasi tentang user yang dicari :</h1>
+
           <!-- TODO: KASIH TOMBOL UBAH DISAMPING INPUT -->
           <form class="max-w-sm">
             <div class="form-control mt-1 w-full">
@@ -69,9 +163,14 @@
                   placeholder="Masukan Disini"
                   id="email-result"
                   class="input input-bordered w-full"
-                  :disabled="true"
+                  :disabled="disableChangeUserData.nis"
+                  v-model="user.data.nis"
                 />
-                <button type="button" class="btn btn-sm btn-error ml-3">
+                <button
+                  @click="toggleChange('nis')"
+                  type="button"
+                  class="btn btn-sm btn-error ml-3"
+                >
                   ubah
                 </button>
               </div>
@@ -86,9 +185,14 @@
                   placeholder="Masukan Disini"
                   id="email-result"
                   class="input input-bordered w-full"
-                  :disabled="true"
+                  :disabled="disableChangeUserData.name"
+                  v-model="user.metadata.name"
                 />
-                <button type="button" class="btn btn-sm btn-error ml-3">
+                <button
+                  @click="toggleChange('name')"
+                  type="button"
+                  class="btn btn-sm btn-error ml-3"
+                >
                   ubah
                 </button>
               </div>
@@ -103,9 +207,14 @@
                   placeholder="Masukan Disini"
                   id="email-result"
                   class="input input-bordered w-full"
-                  :disabled="true"
+                  :disabled="disableChangeUserData.email"
+                  v-model="user.data.email"
                 />
-                <button type="button" class="btn btn-sm btn-error ml-3">
+                <button
+                  @click="toggleChange('email')"
+                  type="button"
+                  class="btn btn-sm btn-error ml-3"
+                >
                   ubah
                 </button>
               </div>
@@ -120,15 +229,23 @@
                   placeholder="Masukan Disini"
                   id="email-result"
                   class="input input-bordered w-full"
-                  :disabled="true"
+                  :disabled="disableChangeUserData.role"
                 />
-                <button type="button" class="btn btn-sm btn-error ml-3">
+                <button
+                  @click="toggleChange('role')"
+                  type="button"
+                  class="btn btn-sm btn-error ml-3"
+                >
                   ubah
                 </button>
               </div>
             </div>
-            <button type="submit" class="btn btn-neutral mt-5">
-              Cari user
+            <button
+              @click="updateUserInfo"
+              type="button"
+              class="btn btn-neutral mt-5"
+            >
+              Lakukan perubahan
             </button>
           </form>
         </div>

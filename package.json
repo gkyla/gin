@@ -32,6 +32,7 @@
     "prettier": "3.0.3"
   },
   "dependencies": {
+    "await-to-js": "^3.0.0",
     "firebase": "^10.4.0",
     "firebase-admin": "^11.10.1",
     "joi": "^17.11.0",
