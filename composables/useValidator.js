@@ -1,15 +1,15 @@
 import Joi from "joi";
 
 export default function () {
-  const nisSchema = Joi.string().alphanum().min(3).max(20);
+  const usernameSchema = Joi.string().alphanum().min(3).max(20);
   const emailSchema = Joi.string().email({ tlds: { allow: false } });
 
-  function validateNisOrEmail(value) {
+  function validateUsernameOrEmail(value) {
     if (!value) return { error: "Value cannot be empty" };
 
-    const isNisValid = nisSchema.validate(value);
-    if (!isNisValid.error) {
-      return { ...isNisValid, type: "nis" };
+    const isUsernameValid = usernameSchema.validate(value);
+    if (!isUsernameValid.error) {
+      return { ...isUsernameValid, type: "username" };
     } else {
       const isEmailValid = emailSchema.validate(value);
       if (!isEmailValid.error) {
@@ -17,8 +17,8 @@ export default function () {
       }
     }
 
-    return { error: "Please fill with correct nis or email address 😊" };
+    return { error: "Please fill with correct Username or Email address 😊" };
   }
 
-  return { nisSchema, emailSchema, validateNisOrEmail };
+  return { usernameSchema, emailSchema, validateUsernameOrEmail };
 }

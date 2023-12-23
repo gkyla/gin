@@ -12,12 +12,12 @@ export default defineEventHandler(async (event) => {
   /* TODO: Check if admin */
 
   let userData = {};
-  const userDataCollection = db.collection("users-nis");
+  const userDataCollection = db.collection("users-username");
   const metaDataCollection = db.collection("users-metadata");
 
-  /* Find with precise value of nis or email */
+  /* Find with precise value of username or email */
 
-  const validate = validateNisOrEmail(userInput);
+  const validate = validateUsernameOrEmail(userInput);
   console.log(validate);
   if (validate.error) {
     return validate.error;
@@ -42,9 +42,9 @@ export default defineEventHandler(async (event) => {
     return populatedData;
   }
 
-  if (validate.type === "nis") {
+  if (validate.type === "username") {
     const querySnapshot = await userDataCollection
-      .where("nis", "==", validate.value)
+      .where("username", "==", validate.value)
       .get();
 
     const [errQuery, data] = await to(findQuery(querySnapshot));

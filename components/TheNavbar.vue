@@ -94,12 +94,6 @@ async function handleLogoutUser() {
           }"
           >{{ currentUser ? userMetadata?.name : "" }}
         </span>
-        <!-- <span
-          :class="{
-            'mx-2': currentUser,
-          }"
-          >{{ currentUser ? "NIS : 1809599001" : "" }}
-        </span> -->
         <details class="dropdown dropdown-end hidden md:inline-block">
           <summary
             tabindex="0"

@@ -2,7 +2,7 @@
 const { login } = await useAuth();
 
 const userLoginInfo = reactive({
-  nis: "",
+  username: "",
   email: "",
   password: "",
 });
@@ -10,7 +10,7 @@ const userLoginInfo = reactive({
 async function handleLoginUser() {
   try {
     const userCredential = await login(
-      userLoginInfo.nis,
+      userLoginInfo.username,
       userLoginInfo.password,
     );
     console.log(userCredential);
@@ -33,20 +33,20 @@ definePageMeta({
       <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-center mb-2">Selamat Datang</h1>
         <p class="text-slate-500">
-          Silakan Login dengan menggunakan NIS dan Password yang sudah kamu
+          Silakan Login dengan menggunakan Username dan Password yang sudah kamu
           tentukan
         </p>
       </div>
 
       <form @submit.prevent="handleLoginUser" class="flex flex-col gap-3">
         <div class="form-control w-full max-w-xs">
-          <label class="label" for="nis">
-            <span class="label-text font-bold">NIS</span>
+          <label class="label" for="username">
+            <span class="label-text font-bold">Username</span>
           </label>
           <input
-            v-model="userLoginInfo.nis"
+            v-model="userLoginInfo.username"
             type="text"
-            id="nis"
+            id="username"
             placeholder="Type here"
             class="input input-bordered w-full max-w-xs"
           />

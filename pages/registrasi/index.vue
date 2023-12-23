@@ -3,7 +3,7 @@ const { login } = await useAuth();
 
 const userRegistrationInfo = reactive({
   name: "",
-  nis: "",
+  username: "",
   email: "",
   role: "Pilih salah satu",
   password: "",
@@ -29,7 +29,7 @@ async function handleRegistrationUser() {
     errorSign.value = null;
     isLoading.value = true;
     const userCredential = await login(
-      userRegistrationInfo.nis,
+      userRegistrationInfo.username,
       userRegistrationInfo.password,
     );
 
@@ -55,15 +55,15 @@ definePageMeta({
       <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-center mb-2">Selamat Datang</h1>
         <p class="text-slate-500">
-          Silakan Registrasi dengan menggunakan NIS dan Password yang valid
+          Silakan Registrasi dengan menggunakan Username dan Password yang valid
         </p>
       </div>
 
       <div
-        v-if="errorSign.isError"
+        v-if="errorSign?.isError"
         class="bg-red-300 text-slate-600 rounded-xl shadow my-2 p-3"
       >
-        {{ errorSign.message || "" }}
+        {{ errorSign?.message || "" }}
       </div>
       <form
         @submit.prevent="handleRegistrationUser"
@@ -82,14 +82,14 @@ definePageMeta({
           />
         </div>
         <div class="form-control w-full max-w-xs">
-          <label class="label" for="nis">
-            <span class="label-text font-bold">NIS</span>
+          <label class="label" for="username">
+            <span class="label-text font-bold">Username</span>
           </label>
           <input
-            v-model="userRegistrationInfo.nis"
+            v-model="userRegistrationInfo.username"
             type="text"
-            id="nis"
-            placeholder="Masukan NIS"
+            id="username"
+            placeholder="Masukan Username"
             class="input input-bordered w-full max-w-xs"
           />
         </div>

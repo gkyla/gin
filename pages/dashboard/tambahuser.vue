@@ -3,7 +3,7 @@ const currentUser = useState("currentUser");
 const { auth } = await useFirebase();
 
 const dataUser = reactive({
-  nis: "",
+  username: "",
   email: "",
   password: "",
   role: "Pilih salah satu",
@@ -62,14 +62,14 @@ async function handleCreateUser() {
       </div>
 
       <div class="form-control w-full max-w-xs">
-        <label class="label" for="nis-user">
-          <span class="label-text">Nomor Induk Sekolah (NIS)</span>
+        <label class="label" for="username-user">
+          <span class="label-text">Usename</span>
         </label>
         <input
-          v-model="dataUser.nis"
+          v-model="dataUser.username"
           type="text"
           placeholder="Masukan Disini"
-          id="nis-user"
+          id="username-user"
           class="input input-bordered w-full max-w-xs"
         />
       </div>
@@ -120,7 +120,7 @@ async function handleCreateUser() {
           <option value="DU/DI">- DU/DI</option>
         </select>
       </div>
-      <button type="submit" class="btn mt-4 btn-neutral">Tambah Siswa</button>
+      <button type="submit" class="btn mt-4 btn-neutral">Tambah User</button>
     </form>
     <!-- End Form -->
 

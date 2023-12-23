@@ -7,18 +7,18 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 export default defineEventHandler(async (event) => {
-  const { email, nis, name, role, password } = await readBody(event);
+  const { email, username, name, role, password } = await readBody(event);
 
   /* Cek 
-    apakah nis sudah ada didalam database?
+    apakah username sudah ada didalam database?
     apakah email sudah terdaftar ?
   */
 
-  if (await isNisExists(nis)) {
+  if (await isUsernameExists(username)) {
     throw createError({
-      statusMessage: `NIS "${nis}" sudah terdaftar di sistem, silakan masukan NIS yang lain`,
+      statusMessage: `Username "${username}" sudah terdaftar di sistem, silakan masukan Username yang lain`,
       data: {
-        message: `NIS "${nis}" sudah terdaftar di sistem, silakan masukan NIS yang lain`,
+        message: `Username "${username}" sudah terdaftar di sistem, silakan masukan Username yang lain`,
         isError: true,
       },
     });
@@ -54,15 +54,15 @@ export default defineEventHandler(async (event) => {
   await auth.setCustomUserClaims(createdUser.uid, {
     role,
   });
-  await db.collection("users-nis").doc(createdUser.uid).set({
-    nis,
+  await db.collection("users-username").doc(createdUser.uid).set({
+    username,
     email,
   });
   await db.collection("users-metadata").doc(createdUser.uid).set({
     name,
   });
   return {
-    message: `Akun dengan nama ${name} dengan nis ${nis} telah berhasil terdaftar!`,
+    message: `Akun dengan nama ${name} & username ${username} telah berhasil terdaftar!`,
     isError: false,
   };
 });

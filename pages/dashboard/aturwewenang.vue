@@ -1,6 +1,6 @@
 <script setup>
 // const { getUserData } = await useFirestore();
-const { validateNisOrEmail } = useValidator();
+const { validateUsernameOrEmail } = useValidator();
 
 const loading = ref(true);
 const errorSign = ref("");
@@ -8,7 +8,7 @@ const searchBar = ref("");
 const user = ref(null);
 const isUser = computed(() => user.value != null);
 const disableChangeUserData = reactive({
-  nis: true,
+  username: true,
   name: true,
   email: true,
   role: true,
@@ -17,7 +17,7 @@ const disableChangeUserData = reactive({
 const beforeUpdateUserState = ref(null);
 
 async function findUser() {
-  const validate = validateNisOrEmail(searchBar.value);
+  const validate = validateUsernameOrEmail(searchBar.value);
   if (validate.error) {
     errorSign.value = validate.error;
     return;
@@ -25,11 +25,6 @@ async function findUser() {
     errorSign.value = "";
   }
   console.log(validate);
-
-  // const userData = await getUserData({
-  //   nis: searchBar.value,
-  //   email: searchBar.value,
-  // });
 
   const { data: userData, error } = await useFetch("/api/auth/admin/users", {
     method: "POST",
@@ -58,7 +53,7 @@ async function updateUserInfo() {
     body: {
       userInput: {
         id: user.value.data.id,
-        nis: user.value.data.nis,
+        username: user.value.data.username,
         email: user.value.data.email,
         name: user.value.metadata.name,
       },
@@ -84,7 +79,9 @@ function toggleChange(field) {
       <div class="grid w-full justify-center">
         <div class="prose prose-md text-center mt-4">
           <h1 class="text-2xl">Atur Wewenang</h1>
-          <p>Cari user menggunakan NIS atau menggunakan email yang terdaftar</p>
+          <p>
+            Cari user menggunakan Username atau menggunakan email yang terdaftar
+          </p>
         </div>
         <div role="alert" v-if="errorSign" class="alert alert-error mt-5">
           <svg
@@ -104,16 +101,14 @@ function toggleChange(field) {
         </div>
         <form @submit.prevent="findUser" class="flex items-center my-2">
           <div class="form-control w-full max-w-lg">
-            <label class="label" for="nis-user">
-              <span class="label-text"
-                >Nomor Induk Sekolah (NIS) Atau Email</span
-              >
+            <label class="label" for="username-user">
+              <span class="label-text">Username Atau Email</span>
             </label>
             <input
               v-model="searchBar"
               type="text"
               placeholder="Masukan Disini"
-              id="nis-user"
+              id="username-user"
               class="input input-bordered w-full max-w-lg"
             />
           </div>
@@ -154,8 +149,8 @@ function toggleChange(field) {
           <!-- TODO: KASIH TOMBOL UBAH DISAMPING INPUT -->
           <form class="max-w-sm">
             <div class="form-control mt-1 w-full">
-              <label class="label" for="nis-result">
-                <span class="label-text">NIS</span>
+              <label class="label" for="username-result">
+                <span class="label-text">Username</span>
               </label>
               <div class="flex items-center">
                 <input
@@ -163,11 +158,11 @@ function toggleChange(field) {
                   placeholder="Masukan Disini"
                   id="email-result"
                   class="input input-bordered w-full"
-                  :disabled="disableChangeUserData.nis"
-                  v-model="user.data.nis"
+                  :disabled="disableChangeUserData.username"
+                  v-model="user.data.username"
                 />
                 <button
-                  @click="toggleChange('nis')"
+                  @click="toggleChange('username')"
                   type="button"
                   class="btn btn-sm btn-error ml-3"
                 >

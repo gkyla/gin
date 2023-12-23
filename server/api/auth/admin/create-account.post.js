@@ -6,7 +6,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 export default defineEventHandler(async (event) => {
-  const { nis, role, email, password, name, idToken } = await readBody(event);
+  const { username, role, email, password, name, idToken } =
+    await readBody(event);
 
   const decodedToken = await auth.verifyIdToken(idToken);
   const userIsAdmin = await auth.getUser(decodedToken.uid);
@@ -22,13 +23,13 @@ export default defineEventHandler(async (event) => {
       },
     });
   } else {
-    if (await isNisExists(nis)) {
+    if (await isUsernameExists(username)) {
       throw createError({
-        statusMessage: `NIS "${nis}" sudah terdaftar di sistem, silakan masukan NIS yang lain`,
+        statusMessage: `Username "${username}" sudah terdaftar di sistem, silakan coba masukan Username yang lain`,
         data: {
-          message: `NIS "${nis}" sudah terdaftar di sistem, silakan masukan NIS yang lain`,
+          message: `Username "${username}" sudah terdaftar di sistem, silakan coba masukan Username yang lain`,
           isError: true,
-          type: "nis",
+          type: "username",
         },
       });
     }
@@ -54,12 +55,12 @@ export default defineEventHandler(async (event) => {
       role,
     });
 
-    const userNisCollection = db.collection("users-nis");
+    const userUsernameCollection = db.collection("users-username");
     const userMetadataCollection = db.collection("users-metadata");
 
-    await userNisCollection.doc(createdUser.uid).set({
+    await userUsernameCollection.doc(createdUser.uid).set({
       email,
-      nis,
+      username,
     });
     await userMetadataCollection.doc(createdUser.uid).set({
       name,
@@ -67,7 +68,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       createdUser,
-      message: `User ${nis} (${name}) telah berhasil dibuat`,
+      message: `User ${username} (${name}) telah berhasil dibuat`,
     };
   }
 });
