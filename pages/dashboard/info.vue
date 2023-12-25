@@ -62,46 +62,4 @@
   </div>
   <h2 class="text-xl mt-5 mb-2">Info</h2>
   <!-- End Stats -->
-  <div class="flex gap-2">
-    <div
-      class="card max-w-[440] w-full bg-base-100 max-h-[200px] shadow-sm image-full"
-    >
-      <figure class="">
-        <img src="~/assets/img/wireframe.png" alt="Shoes" class="" />
-      </figure>
-      <div class="card-body">
-        <h2 class="card-title">Tambah Siswa</h2>
-        <p>
-          Tambah siswa dengan menggunakan nomor NIS agar siswa bisa mengakses
-          fitur wesbite
-        </p>
-        <div class="card-actions justify-end">
-          <button class="btn">
-            <Icon name="line-md:account-add" size="1.3em" />
-            Tambah
-          </button>
-        </div>
-      </div>
-    </div>
-    <div
-      class="card max-w-[440] w-full bg-base-100 max-h-[200px] shadow-sm image-full"
-    >
-      <figure class="">
-        <img src="~/assets/img/wireframe.png" alt="Shoes" class="" />
-      </figure>
-      <div class="card-body">
-        <h2 class="card-title">Manage Siswa</h2>
-        <p>
-          Atur profile siswa dari mulai email, nama dan juga wewenang terhadap
-          website
-        </p>
-        <div class="card-actions justify-end">
-          <button class="btn">
-            <Icon name="line-md:account-alert" size="1.3em" />
-            Atur
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>

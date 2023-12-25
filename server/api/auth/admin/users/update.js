@@ -9,7 +9,7 @@ const db = getFirestore(app);
 export default defineEventHandler(async (event) => {
   const { userInput } = await readBody(event);
 
-  const userDataCollection = db.collection("users-nis");
+  const userDataCollection = db.collection("users-username");
   const metaDataCollection = db.collection("users-metadata");
 
   //   userDataCollection.doc
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   const [errUserData] = await to(
     userDataCollection.doc(userInput.id).update({
       email: userInput.email,
-      nis: userInput.nis,
+      username: userInput.username,
     }),
   );
 

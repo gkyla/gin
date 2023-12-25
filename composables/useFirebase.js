@@ -6,12 +6,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Ini bisa diganti nanti kalo udah mau ganti project
 const firebaseConfig = {
-  apiKey: "AIzaSyCT9KGp43SVj4Qq7tNGjdeKi7yAf6-JL5w",
-  authDomain: "alumni-template-target-mentari.firebaseapp.com",
-  projectId: "alumni-template-target-mentari",
-  storageBucket: "alumni-template-target-mentari.appspot.com",
-  messagingSenderId: "230175930310",
-  appId: "1:230175930310:web:3bfddf00eea017e4e6a4c7",
+  apiKey: "AIzaSyCALhmppTWGO8DcP0Vt8nNXmgaxW0giP_E",
+  authDomain: "letscvit.firebaseapp.com",
+  projectId: "letscvit",
+  storageBucket: "letscvit.appspot.com",
+  messagingSenderId: "895378550028",
+  appId: "1:895378550028:web:9ed1972f3e96c34a09ad29",
+  measurementId: "G-B4Z65Y3XZ1",
 };
 
 // Initialize Firebase

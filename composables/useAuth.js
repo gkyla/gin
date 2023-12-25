@@ -22,9 +22,9 @@ export default async function () {
     // const userRecords =
   }
 
-  async function login(nis, password) {
+  async function login(username, password) {
     try {
-      const userData = await getUserData({ nis });
+      const userData = await getUserData({ username });
       console.log(userData);
       const userCredential = await signInWithEmailAndPassword(
         auth,

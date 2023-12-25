@@ -10,30 +10,26 @@ import {
 export default async function () {
   const { db } = await useFirebase();
 
-  // function buildUserNisRef(nis) {
-  //   return doc(db, "users-nis", nis);
-  // }
-
   function buildUserMetadataRef(uid) {
     return doc(db, "users-metadata", uid);
   }
 
-  async function getUserData({ nis, email }) {
+  async function getUserData({ username, email }) {
     /* TODO: 
       ini mungkin harus dipindahin ke backend, karna ngambil user info 
       cuman bisa lewat firebase admin sdk 
     */
-    if (!nis && !email) return;
+    if (!username && !email) return;
 
-    if (nis) {
+    if (username) {
       console.log("wew s");
-      const refArg = collection(db, "users-nis");
-      const q = query(refArg, where("nis", "==", nis));
+      const refArg = collection(db, "users-username");
+      const q = query(refArg, where("username", "==", username));
       return await findQuery(q);
     }
 
     if (email) {
-      const refArg = collection(db, "users-nis");
+      const refArg = collection(db, "users-username");
       const q = query(refArg, where("email", "==", email));
       return await findQuery(q);
     }
