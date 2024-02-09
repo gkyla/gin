@@ -35,8 +35,7 @@ onMounted(() => {
     </h1>
     <div v-if="!isLoading" class="">
       <TheNavbar />
-      <div class="mt-20 absolute top-0 left-0 right-0 bottom-0">
-        w
+      <div class="mt-[65px] absolute top-0 left-0 right-0 bottom-0">
         <slot />
       </div>
     </div>

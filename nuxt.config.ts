@@ -5,7 +5,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
-  modules: ["@nuxtjs/eslint-module", "@nuxtjs/tailwindcss", "@nuxtjs/color-mode", "nuxt-icon", "@nuxtjs/google-fonts"],
+  modules: ["@nuxtjs/eslint-module", "@nuxtjs/tailwindcss", "@nuxtjs/color-mode", "nuxt-icon", "@nuxtjs/google-fonts","@sidebase/nuxt-pdf"],
   colorMode: {
     preference: "light", // default theme
     dataValue: "theme", // activate data-theme in <html> tag

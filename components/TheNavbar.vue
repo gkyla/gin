@@ -30,7 +30,7 @@ async function handleLogoutUser() {
   <div class="drawer z-10">
     <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
     <div
-      class="drawer-content w-full flex justify-center items-center fixed top-0 left-0 right-0 shadow"
+      class="drawer-content w-full flex justify-center items-center fixed top-0 left-0 right-0 shadow bg-base-100"
     >
       <div class="navbar p-0 px-1 max-w-screen-xl bg-base-100">
         <div class="flex-1">
